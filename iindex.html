@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Passion Bikes | Unleash the Beast</title>
+    
+    <!-- Fonts: Orbitron for futuristic headers, Rajdhani for technical body text -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- VARIABLES & RESET --- */
+        :root {
+            --bg-dark: #050505;
+            --bg-card: #0f0f0f;
+            --bg-panel: #141414;
+            --accent-red: #e60000;
+            --accent-red-glow: rgba(230, 0, 0, 0.4);
+            --text-main: #ffffff;
+            --text-muted: #888888;
+            --metallic: #b3b3b3;
+            --border-color: #333333;
+            --font-head: 'Orbitron', sans-serif;
+            --font-body: 'Rajdhani', sans-serif;
+            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; }
+        img { width: 100%; display: block; }
+        button { cursor: pointer; border: none; outline: none; font-family: var(--font-head); }
+
+        /* --- UTILITIES --- */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 60px;
+            height: 4px;
+            background-color: var(--accent-red);
+        }
+
+        .text-center { text-align: center; }
+        .flex-center { display: flex; justify-content: center; align-items: center; }
+        .grid { display: grid; gap: 30px; }
+        
+        .btn {
+            padding: 12px 35px;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
+            transition: var(--transition);
+            letter-spacing: 1px;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-red);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #ff1a1a;
+            box-shadow: 0 0 20px var(--accent-red-glow);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--text-main);
+            color: var(--text-main);
+        }
+
+        .btn-outline:hover {
+            background: var(--text-main);
+            color: var(--bg-dark);
+        }
+
+        /* --- HEADER --- */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 0;
+            transition: var(--transition);
+            background: linear-gradient(to bottom, rgba(5,5,5,0.9), transparent);
+        }
+
+        header.scrolled {
+            background-color: rgba(5, 5, 5, 0.95);
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-head);
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--text-main);
+            font-style: italic;
+        }
+
+        .logo span { color: var(--accent-red); }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+        }
+
+        .nav-links a {
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-red);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::before { width: 100%; }
+
+        .nav-icons {
+            display: flex;
+            gap: 20px;
+            font-size: 1.2rem;
+        }
+
+        .nav-icons i { cursor: pointer; transition: 0.3s; }
+        .nav-icons i:hover { color: var(--accent-red); }
+
+        .cart-count {
+            position: relative;
+        }
+        .cart-count::after {
+            content: '2';
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background: var(--accent-red);
+            font-size: 0.7rem;
+            padding: 2px 5px;
+            border-radius: 50%;
+            font-family: var(--font-body);
+        }
+
+        /* --- HERO SECTION --- */
+        #home-hero {
+            height: 100vh;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Simulated Video Background with CSS Animation */
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://picsum.photos/seed/superbike99/1920/1080') no-repeat center center/cover;
+            filter: brightness(0.4);
+            z-index: -1;
+            animation: zoomSlow 20s infinite alternate;
+        }
+
+        @keyframes zoomSlow {
+            from { transform: scale(1); }
+            to { transform: scale(1.15); }
+        }
+
+        .hero-content {
+            z-index: 2;
+            padding-left: 10%;
+            opacity: 0;
+            animation: slideUp 1s forwards 0.5s;
+        }
+
+        .hero-content h1 {
+            font-family: var(--font-head);
+            font-size: 5rem;
+            line-height: 1.1;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
+        }
+
+        .hero-content h1 span {
+            color: transparent;
+            -webkit-text-stroke: 1px var(--accent-red);
+        }
+
+        .hero-content p {
+            font-size: 1.5rem;
+            color: var(--metallic);
+            margin-bottom: 40px;
+            max-width: 600px;
+        }
+
+        /* --- CATEGORIES --- */
+        #categories { padding: 100px 0; }
+        
+        .cat-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-top: 50px;
+        }
+
+        .cat-card {
+            height: 350px;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+        }
+
+        .cat-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s;
+            filter: grayscale(80%);
+        }
+
+        .cat-card:hover img {
+            transform: scale(1.1);
+            filter: grayscale(0%);
+        }
+
+        .cat-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+        }
+
+        .cat-overlay h3 {
+            font-family: var(--font-head);
+            font-size: 1.5rem;
+            color: var(--text-main);
+            transform: translateY(20px);
+            transition: 0.4s;
+        }
+
+        .cat-card:hover h3 { transform: translateY(0); color: var(--accent-red); }
+
+        /* --- SHOP & FILTERS --- */
+        #shop { padding: 80px 0; background-color: var(--bg-panel); }
+        
+        .shop-layout {
+            display: flex;
+            gap: 40px;
+        }
+
+        .filters {
+            width: 300px;
+            flex-shrink: 0;
+            padding: 30px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            height: fit-content;
+        }
+
+        .filter-group { margin-bottom: 30px; }
+        .filter-group h4 {
+            margin-bottom: 15px;
+            color: var(--accent-red);
+            font-family: var(--font-head);
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            color: var(--metallic);
+            cursor: pointer;
+        }
+
+        .filter-option input { margin-right: 10px; accent-color: var(--accent-red); }
+        
+        .price-range { width: 100%; accent-color: var(--accent-red); }
+
+        .product-grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            position: relative;
+            transition: var(--transition);
+            overflow: hidden;
+            group: ;
+        }
+
+        .product-card:hover {
+            border-color: var(--accent-red);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .prod-img-box {
+            height: 250px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .prod-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.5s;
+        }
+
+        .product-card:hover .prod-img-box img { transform: scale(1.1); }
+
+        .prod-actions {
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 10px;
+            background: rgba(0,0,0,0.8);
+            transition: 0.3s;
+        }
+
+        .product-card:hover .prod-actions { bottom: 0; }
+
+        .action-btn {
+            width: 40px;
+            height: 40px;
+            background: var(--text-main);
+            color: var(--bg-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+
+        .action-btn:hover { background: var(--accent-red); color: white; }
+
+        .prod-details { padding: 20px; }
+        .prod-brand { color: var(--accent-red); font-size: 0.9rem; font-weight: 700; text-transform: uppercase; }
+        .prod-name { font-size: 1.4rem; font-family: var(--font-head); margin: 5px 0; }
+        .prod-specs { display: flex; justify-content: space-between; color: var(--text-muted); font-size: 0.9rem; margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 10px; }
+        .prod-price { font-size: 1.5rem; color: var(--text-main); font-weight: 700; }
+        .prod-financing { font-size: 0.85rem; color: var(--metallic); }
+
+        /* --- PRODUCT DETAIL VIEW --- */
+        #product-detail-view {
+            display: none; /* Hidden by default */
+            padding: 120px 0 60px;
+            min-height: 100vh;
+        }
+
+        .detail-wrapper {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 50px;
+        }
+
+        .detail-gallery {
+            position: relative;
+        }
+
+        .main-img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        .thumb-grid { display: flex; gap: 10px; }
+        .thumb { width: 80px; height: 80px; object-fit: cover; border: 1px solid var(--border-color); cursor: pointer; opacity: 0.6; }
+        .thumb.active { opacity: 1; border-color: var(--accent-red); }
+
+        .detail-info h1 { font-size: 3rem; margin-bottom: 10px; font-family: var(--font-head); }
+        .detail-price { font-size: 2.5rem; color: var(--accent-red); font-weight: 700; margin-bottom: 20px; }
+        .detail-desc { color: var(--text-muted); margin-bottom: 30px; }
+        
+        .key-specs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            background: var(--bg-panel);
+            padding: 20px;
+            margin-bottom: 30px;
+            border-left: 3px solid var(--accent-red);
+        }
+        
+        .spec-item h5 { color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; }
+        .spec-item span { font-size: 1.2rem; font-weight: 700; font-family: var(--font-head); }
+
+        .btn-group { display: flex; gap: 20px; margin-bottom: 30px; }
+
+        /* 360 View Placeholder */
+        .view-360 {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px dashed var(--border-color);
+            text-align: center;
+            cursor: pointer;
+            color: var(--metallic);
+            transition: 0.3s;
+        }
+        .view-360:hover { border-color: var(--accent-red); color: var(--accent-red); }
+
+        /* --- ABOUT & BLOG --- */
+        #about { padding: 100px 0; text-align: center; background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://picsum.photos/seed/workshop/1920/600') fixed center/cover; }
+        
+        #blog { padding: 80px 0; }
+        .blog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        .blog-card { background: var(--bg-card); border: 1px solid var(--border-color); }
+        .blog-img { height: 200px; object-fit: cover; width: 100%; }
+        .blog-content { padding: 20px; }
+        .blog-date { font-size: 0.8rem; color: var(--accent-red); }
+        .blog-title { margin: 10px 0; font-size: 1.3rem; font-family: var(--font-head); }
+
+        /* --- CONTACT & FOOTER --- */
+        #contact { padding: 80px 0; background: var(--bg-panel); }
+        
+        footer {
+            background: #000;
+            padding: 60px 0 20px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h4 {
+            color: var(--text-main);
+            margin-bottom: 20px;
+            font-family: var(--font-head);
+        }
+
+        .footer-col ul li { margin-bottom: 10px; color: var(--text-muted); transition: 0.3s; cursor: pointer; }
+        .footer-col ul li:hover { color: var(--accent-red); padding-left: 5px; }
+
+        .socials { display: flex; gap: 15px; margin-top: 20px; }
+        .socials i { width: 40px; height: 40px; background: #222; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: 0.3s; }
+        .socials i:hover { background: var(--accent-red); }
+
+        /* --- UI ELEMENTS (Toast, Modal) --- */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--bg-panel);
+            border-left: 4px solid var(--accent-red);
+            color: white;
+            padding: 15px 25px;
+            transform: translateX(200%);
+            transition: transform 0.4s ease;
+            z-index: 2000;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+        .toast.show { transform: translateX(0); }
+
+        /* Animations */
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) {
+            .cat-grid, .blog-grid { grid-template-columns: repeat(2, 1fr); }
+            .detail-wrapper { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .hero-content h1 { font-size: 3rem; }
+            .shop-layout { flex-direction: column; }
+            .filters { width: 100%; }
+            .nav-links { display: none; } /* Mobile Menu would go here */
+            .footer-grid { grid-template-columns: 1fr; }
+            .cat-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header id="header">
+        <div class="container">
+            <nav>
+                <div class="logo">PASSION <span>BIKES</span></div>
+                <ul class="nav-links">
+                    <li><a href="#" onclick="switchView('home')">Home</a></li>
+                    <li><a href="#shop" onclick="switchView('shop')">Shop</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#blog">Blog</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <div class="nav-icons">
+                    <i class="fas fa-search"></i>
+                    <i class="far fa-user"></i>
+                    <i class="far fa-heart"></i>
+                    <div class="cart-count" onclick="toggleCart()">
+                        <i class="fas fa-motorcycle"></i>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Wrapper -->
+    <main id="main-content">
+        
+        <!-- HOME VIEW -->
+        <div id="home-view">
+            <!-- Hero -->
+            <section id="home-hero">
+                <div class="hero-bg"></div>
+                <div class="container hero-content">
+                    <h1>Unleash <br><span>The Beast</span></h1>
+                    <p>Experience the pinnacle of engineering. Superbikes designed for those who refuse to settle for ordinary.</p>
+                    <button class="btn btn-primary" onclick="switchView('shop')">Explore Bikes</button>
+                </div>
+            </section>
+
+            <!-- Categories -->
+            <section id="categories">
+                <div class="container">
+                    <div class="text-center">
+                        <h2 class="section-title">Choose Your Weapon</h2>
+                    </div>
+                    <div class="cat-grid">
+                        <div class="cat-card">
+                            <img src="https://picsum.photos/seed/sportbike/400/600" alt="Sport">
+                            <div class="cat-overlay"><h3>Sport</h3></div>
+                        </div>
+                        <div class="cat-card">
+                            <img src="https://picsum.photos/seed/nakedbike/400/600" alt="Naked">
+                            <div class="cat-overlay"><h3>Naked</h3></div>
+                        </div>
+                        <div class="cat-card">
+                            <img src="https://picsum.photos/seed/touringbike/400/600" alt="Touring">
+                            <div class="cat-overlay"><h3>Touring</h3></div>
+                        </div>
+                        <div class="cat-card">
+                            <img src="https://picsum.photos/seed/ebike/400/600" alt="Electric">
+                            <div class="cat-overlay"><h3>Electric</h3></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About / Brand -->
+            <section id="about">
+                <div class="container">
+                    <h2 class="section-title" style="color:white; border-color: white;">The Passion Brand</h2>
+                    <p style="max-width: 700px; margin: 20px auto; font-size: 1.2rem; color: #ddd;">
+                        Born on the track, refined for the street. Passion Bikes represents the fusion of Italian design and Japanese precision. We don't just build motorcycles; we build adrenaline machines.
+                    </p>
+                    <button class="btn btn-outline" style="margin-top: 20px;">Read Our Story</button>
+                </div>
+            </section>
+        </div>
+
+        <!-- SHOP VIEW -->
+        <div id="shop-view" style="display: none;">
+            <section id="shop">
+                <div class="container">
+                    <div class="text-center" style="margin-bottom: 50px;">
+                        <h2 class="section-title">Showroom</h2>
+                    </div>
+                    
+                    <div class="shop-layout">
+                        <!-- Filters Sidebar -->
+                        <aside class="filters">
+                            <div class="filter-group">
+                                <h4>Categories</h4>
+                                <label class="filter-option"><input type="checkbox"> Sport</label>
+                                <label class="filter-option"><input type="checkbox"> Naked</label>
+                                <label class="filter-option"><input type="checkbox"> Touring</label>
+                                <label class="filter-option"><input type="checkbox"> Electric</label>
+                            </div>
+                            <div class="filter-group">
+                                <h4>Price Range</h4>
+                                <input type="range" class="price-range" min="10000" max="50000">
+                                <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: #888; margin-top: 5px;">
+                                    <span>$10k</span>
+                                    <span>$50k+</span>
+                                </div>
+                            </div>
+                            <div class="filter-group">
+                                <h4>Engine Capacity</h4>
+                                <label class="filter-option"><input type="checkbox"> 600cc - 900cc</label>
+                                <label class="filter-option"><input type="checkbox"> 1000cc+</label>
+                            </div>
+                            <button class="btn btn-primary" style="width: 100%; padding: 10px;">Apply Filters</button>
+                        </aside>
+
+                        <!-- Product Grid -->
+                        <div class="product-grid" id="product-list">
+                            <!-- Product 1 -->
+                            <div class="product-card">
+                                <div class="prod-img-box">
+                                    <img src="https://picsum.photos/seed/bike1/500/350" alt="Bike">
+                                    <div class="prod-actions">
+                                        <button class="action-btn" onclick="addToCart('Viper X1')"><i class="fas fa-shopping-cart"></i></button>
+                                        <button class="action-btn" onclick="openProduct(1)"><i class="fas fa-eye"></i></button>
+                                        <button class="action-btn"><i class="fas fa-heart"></i></button>
+                                    </div>
+                                </div>
+                                <div class="prod-details">
+                                    <div class="prod-brand">Passion Bikes</div>
+                                    <h3 class="prod-name">Viper X1</h3>
+                                    <div class="prod-specs">
+                                        <span><i class="fas fa-tachometer-alt"></i> 180 mph</span>
+                                        <span><i class="fas fa-bolt"></i> 1000cc</span>
+                                    </div>
+                                    <div class="prod-price">$24,999</div>
+                                    <div class="prod-financing">or $416/mo with financing</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Product 2 -->
+                            <div class="product-card">
+                                <div class="prod-img-box">
+                                    <img src="https://picsum.photos/seed/bike2/500/350" alt="Bike">
+                                    <div class="prod-actions">
+                                        <button class="action-btn" onclick="addToCart('Phantom R')"><i class="fas fa-shopping-cart"></i></button>
+                                        <button class="action-btn" onclick="openProduct(2)"><i class="fas fa-eye"></i></button>
+                                        <button class="action-btn"><i class="fas fa-heart"></i></button>
+                                    </div>
+                                </div>
+                                <div class="prod-details">
+                                    <div class="prod-brand">Passion Bikes</div>
+                                    <h3 class="prod-name">Phantom R</h3>
+                                    <div class="prod-specs">
+                                        <span><i class="fas fa-tachometer-alt"></i> 175 mph</span>
+                                        <span><i class="fas fa-bolt"></i> 900cc</span>
+                                    </div>
+                                    <div class="prod-price">$19,500</div>
+                                    <div class="prod-financing">or $325/mo with financing</div>
+                                </div>
+                            </div>
+
+                            <!-- Product 3 -->
+                            <div class="product-card">
+                                <div class="prod-img-box">
+                                    <img src="https://picsum.photos/seed/bike3/500/350" alt="Bike">
+                                    <div class="prod-actions">
+                                        <button class="action-btn" onclick="addToCart('Electron E1')"><i class="fas fa-shopping-cart"></i></button>
+                                        <button class="action-btn" onclick="openProduct(3)"><i class="fas fa-eye"></i></button>
+                                        <button class="action-btn"><i class="fas fa-heart"></i></button>
+                                    </div>
+                                </div>
+                                <div class="prod-details">
+                                    <div class="prod-brand">Passion Electric</div>
+                                    <h3 class="prod-name">Electron E1</h3>
+                                    <div class="prod-specs">
+                                        <span><i class="fas fa-tachometer-alt"></i> 150 mph</span>
+                                        <span><i class="fas fa-battery-full"></i> 200mi</span>
+                                    </div>
+                                    <div class="prod-price">$28,000</div>
+                                    <div class="prod-financing">or $466/mo with financing</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Blog Section -->
+            <section id="blog">
+                <div class="container">
+                    <h2 class="section-title">Biker Life</h2>
+                    <div class="blog-grid">
+                        <div class="blog-card">
+                            <img src="https://picsum.photos/seed/helmet/400/250" class="blog-img" alt="Blog">
+                            <div class="blog-content">
+                                <div class="blog-date">Oct 12, 2023</div>
+                                <h3 class="blog-title">Top 5 Riding Gloves for Winter</h3>
+                                <p style="color:#888; font-size:0.9rem;">Stay warm and safe on the track with these premium picks...</p>
+                            </div>
+                        </div>
+                        <div class="blog-card">
+                            <img src="https://picsum.photos/seed/road/400/250" class="blog-img" alt="Blog">
+                            <div class="blog-content">
+                                <div class="blog-date">Sep 28, 2023</div>
+                                <h3 class="blog-title">Review: The New Viper X1</h3>
+                                <p style="color:#888; font-size:0.9rem;">We took the beast to the track. Here is what happened...</p>
+                            </div>
+                        </div>
+                        <div class="blog-card">
+                            <img src="https://picsum.photos/seed/gear/400/250" class="blog-img" alt="Blog">
+                            <div class="blog-content">
+                                <div class="blog-date">Sep 15, 2023</div>
+                                <h3 class="blog-title">Maintenance 101: Oil Changes</h3>
+                                <p style="color:#888; font-size:0.9rem;">How to keep your engine running smooth for years...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- PRODUCT DETAIL VIEW (Initially Hidden) -->
+        <div id="product-detail-view">
+            <div class="container">
+                <button onclick="switchView('shop')" class="btn btn-outline" style="margin-bottom: 30px;"><i class="fas fa-arrow-left"></i> Back to Shop</button>
+                
+                <div class="detail-wrapper">
+                    <!-- Gallery -->
+                    <div class="detail-gallery">
+                        <img id="detail-img" src="https://picsum.photos/seed/bike1/800/600" class="main-img" alt="Detail">
+                        <div class="thumb-grid">
+                            <img src="https://picsum.photos/seed/bike1/800/600" class="thumb active" onclick="changeImage(this)">
+                            <img src="https://picsum.photos/seed/bike-detail-2/800/600" class="thumb" onclick="changeImage(this)">
+                            <img src="https://picsum.photos/seed/bike-detail-3/800/600" class="thumb" onclick="changeImage(this)">
+                        </div>
+                        <div class="view-360">
+                            <i class="fas fa-sync-alt"></i> View 360° Interactive Model
+                        </div>
+                    </div>
+
+                    <!-- Info -->
+                    <div class="detail-info">
+                        <div style="color: var(--accent-red); font-weight: 700; margin-bottom: 10px;">PASSION BIKES</div>
+                        <h1 id="detail-title">Viper X1</h1>
+                        <div class="detail-price" id="detail-price">$24,999</div>
+                        <p class="detail-desc">
+                            The Viper X1 is the culmination of aerodynamic excellence and raw power. Featuring a titanium exhaust, carbon fiber fairing, and a race-tuned 1000cc engine. This machine is not for the faint of heart.
+                        </p>
+
+                        <div class="key-specs">
+                            <div class="spec-item">
+                                <h5>Engine</h5>
+                                <span>999cc Inline-4</span>
+                            </div>
+                            <div class="spec-item">
+                                <h5>Power</h5>
+                                <span>215 HP</span>
+                            </div>
+                            <div class="spec-item">
+                                <h5>Weight</h5>
+                                <span>195 kg</span>
+                            </div>
+                            <div class="spec-item">
+                                <h5>Top Speed</h5>
+                                <span>180+ mph</span>
+                            </div>
+                        </div>
+
+                        <div class="btn-group">
+                            <button class="btn btn-primary" onclick="addToCart('Viper X1')">Add to Cart</button>
+                            <button class="btn btn-outline"><i class="fas fa-balance-scale"></i> Compare</button>
+                        </div>
+
+                        <div style="margin-top: 30px; border-top: 1px solid #333; padding-top: 20px;">
+                            <h4 style="margin-bottom: 15px;">Customer Reviews</h4>
+                            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                                <div style="color: gold; margin-right: 10px;">
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                </div>
+                                <span style="color: #888;">"Absolute beast on the track." - Jake M.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Section -->
+        <section id="contact">
+            <div class="container">
+                <h2 class="section-title text-center">Find Us</h2>
+                <div style="display: flex; flex-wrap: wrap; gap: 40px; margin-top: 50px;">
+                    <div style="flex: 1; min-width: 300px;">
+                        <h3 style="margin-bottom: 20px; font-family: var(--font-head);">Showroom</h3>
+                        <p style="color: #888; margin-bottom: 10px;"><i class="fas fa-map-marker-alt" style="color: var(--accent-red); width: 20px;"></i> 123 Speedway Blvd, Moto City, CA</p>
+                        <p style="color: #888; margin-bottom: 10px;"><i class="fas fa-phone" style="color: var(--accent-red); width: 20px;"></i> +1 (555) 123-4567</p>
+                        <p style="color: #888;"><i class="fas fa-envelope" style="color: var(--accent-red); width: 20px;"></i> ride@passionbikes.com</p>
+                    </div>
+                    <div style="flex: 2; min-width: 300px; height: 300px; background: #222; display: flex; align-items: center; justify-content: center; color: #555;">
+                        <!-- Map Placeholder -->
+                        <i class="fas fa-map-marked-alt" style="font-size: 3rem;"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="logo" style="margin-bottom: 20px;">PASSION <span>BIKES</span></div>
+                    <p style="color: #888; font-size: 0.9rem;">The ultimate destination for superbike enthusiasts. Luxury, performance, and pure adrenaline.</p>
+                    <div class="socials">
+                        <i class="fab fa-facebook-f"></i>
+                        <i class="fab fa-instagram"></i>
+                        <i class="fab fa-youtube"></i>
+                        <i class="fab fa-twitter"></i>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Shop</h4>
+                    <ul>
+                        <li>Superbikes</li>
+                        <li>Gear & Equipment</li>
+                        <li>Parts</li>
+                        <li>Merchandise</li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Support</h4>
+                    <ul>
+                        <li>Financing</li>
+                        <li>Shipping & Returns</li>
+                        <li>Warranty</li>
+                        <li>Service Center</li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Account</h4>
+                    <ul>
+                        <li>Log In</li>
+                        <li>Register</li>
+                        <li>Order Status</li>
+                        <li>Wishlist</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="text-center" style="color: #444; font-size: 0.8rem;">
+                &copy; 2023 Passion Bikes. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <i class="fas fa-check-circle"></i> <span id="toast-msg">Action Successful</span>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // --- Navigation Logic (SPA Feel) ---
+        const homeView = document.getElementById('home-view');
+        const shopView = document.getElementById('shop-view');
+        const detailView = document.getElementById('product-detail-view');
+        const header = document.getElementById('header');
+
+        function switchView(viewName) {
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Hide all
+            homeView.style.display = 'none';
+            shopView.style.display = 'none';
+            detailView.style.display = 'none';
+
+            // Show target
+            if (viewName === 'home') {
+                homeView.style.display = 'block';
+            } else if (viewName === 'shop') {
+                shopView.style.display = 'block';
+            } else if (viewName === 'detail') {
+                detailView.style.display = 'block';
+            }
+        }
+
+        // --- Header Scroll Effect ---
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // --- Product Detail Simulation ---
+        function openProduct(id) {
+            // In a real app, this would fetch data based on ID
+            switchView('detail');
+            
+            // Simulate data update
+            const titles = ["Viper X1", "Phantom R", "Electron E1"];
+            const prices = ["$24,999", "$19,500", "$28,000"];
+            const images = [
+                "https://picsum.photos/seed/bike1/800/600",
+                "https://picsum.photos/seed/bike2/800/600",
+                "https://picsum.photos/seed/bike3/800/600"
+            ];
+
+            if(id <= titles.length) {
+                document.getElementById('detail-title').innerText = titles[id-1];
+                document.getElementById('detail-price').innerText = prices[id-1];
+                document.getElementById('detail-img').src = images[id-1];
+            }
+        }
+
+        // --- Gallery Image Switch ---
+        function changeImage(thumb) {
+            document.getElementById('detail-img').src = thumb.src;
+            
+            // Update active state
+            document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+            thumb.classList.add('active');
+        }
+
+        // --- Toast Notification ---
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').innerText = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // --- Cart Action ---
+        function addToCart(item) {
+            showToast(`${item} added to cart!`);
+            
+            // Update visual cart count
+            const countBadge = document.querySelector('.cart-count');
+            // Simple parse and increment simulation
+            // Logic strictly visual for this demo
+        }
+
+        function toggleCart() {
+            showToast("Opening Cart...");
+        }
+    </script>
+</body>
+</html>
